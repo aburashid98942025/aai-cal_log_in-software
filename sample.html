@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport Authority of India - Portal Login</title>
+
+    <!-- Favicon for Browser Tab Icon -->
+    <link rel="icon" type="image/jpeg" href="D:/call-login software/photos/logo.jpeg">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandcyan: '#06b6d4',
+                        brandblue: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            overflow-x: hidden;
+            background-image: url('D:/call-login software/photos/aai_image2.jpeg');
+            background-size: cover;
+        }
+
+        /* Darker & Blurred Background Layer */
+        .page-background {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to bottom, rgba(3, 7, 18, 0.6), rgba(3, 7, 18, 0.7)),
+                url('D:/call-login software/photos/aai_image2.jpeg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            transform: scale(1.05);
+            z-index: -1;
+        }
+
+        /* Center Animation Container Slide & Lock */
+        .header-center-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideInToCenter 6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes slideInToCenter {
+            0% {
+                left: 150%;
+                transform: translateX(0%);
+                opacity: 0;
+            }
+
+            100% {
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 1;
+            }
+        }
+
+        /* Header-Style Transparent Glassmorphic Login Card */
+        .glass-card {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen relative" onload="checkRememberedUser()">
+
+    <!-- Dark & Blurred Background -->
+    <div class="page-background"></div>
+
+    <!-- TRANSPARENT & BLURRED HEADER BAR -->
+    <header
+        class="w-full bg-black/30 backdrop-blur-md border-b border-white/10 h-16 flex items-center justify-center px-4 overflow-hidden sticky top-0 z-50">
+
+        <!-- Grouped Emblem & Text Moving Together to Exact Center -->
+        <div class="header-center-container flex items-center gap-3 whitespace-nowrap">
+            <!-- Round Shaped Emblem Image (CHANGED HERE: rounded-full & h-8 w-8 object-cover) -->
+            <img class="h-8 w-8 object-cover rounded-full border border-white/20 shadow-md"
+                src="C:/Users/abura/OneDrive/Pictures/Camera Roll/aai_image.jpeg" alt="AAI Emblem">
+            <span class="text-xs lg:text-sm font-bold tracking-wider text-white uppercase drop-shadow-md">भारतीय
+                विमानपत्तन प्राधिकरण — AIRPORTS AUTHORITY OF INDIA</span>
+            <span class="text-[11px] text-brandcyan font-semibold drop-shadow-md">(Ministry of Civil Aviation)</span>
+        </div>
+
+    </header>
+
+    <!-- CENTER LOGIN FORM SECTION -->
+    <main class="flex-1 flex items-center justify-center p-4 relative z-10">
+        <div class="w-full max-w-md glass-card rounded-2xl p-6 lg:p-8">
+
+            <!-- Role Selection Tabs -->
+            <div class="flex bg-black/40 p-1 rounded-xl mb-6 border border-white/10">
+                <button type="button" onclick="selectRole('user')" id="tab-user"
+                    class="flex-1 py-2 text-xs font-semibold rounded-lg text-white bg-brandblue transition-all duration-200">
+                    <i class="fa-solid fa-user mr-1.5"></i> User
+                </button>
+                <button type="button" onclick="selectRole('engineer')" id="tab-engineer"
+                    class="flex-1 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-white transition-all duration-200">
+                    <i class="fa-solid fa-user-ninja mr-1.5"></i> Engineer
+                </button>
+                <button type="button" onclick="selectRole('admin')" id="tab-admin"
+                    class="flex-1 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-white transition-all duration-200">
+                    <i class="fa-solid fa-user-shield mr-1.5"></i> Admin
+                </button>
+            </div>
+
+            <!-- Login Title & Subtitle -->
+            <div class="text-center mb-6">
+                <h2 id="login-title" class="text-xl font-bold text-white tracking-wide">User Portal Login</h2>
+                <p id="login-subtitle" class="text-xs text-slate-300 mt-1">Please enter your credentials to access your
+                    dashboard</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+
+                <!-- Username Field -->
+                <div>
+                    <label id="username-label" class="block text-xs font-medium text-slate-300 mb-1.5">Username /
+                        ID</label>
+                    <div class="relative">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <i id="username-icon" class="fa-solid fa-user-astronaut text-sm"></i>
+                        </span>
+                        <input type="text" id="username" required placeholder="Enter your username"
+                            class="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-brandcyan focus:ring-1 focus:ring-brandcyan transition-all">
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1.5">Password</label>
+                    <div class="relative">
+                        <span
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-lock text-sm"></i>
+                        </span>
+                        <input type="password" id="password" required placeholder="Enter your password"
+                            class="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-brandcyan focus:ring-1 focus:ring-brandcyan transition-all">
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="flex items-center justify-between text-xs pt-1">
+                    <label class="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                        <input type="checkbox" id="rememberMe"
+                            class="w-3.5 h-3.5 rounded bg-black/40 border-white/20 text-brandcyan focus:ring-0 focus:ring-offset-0 cursor-pointer">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" onclick="handleForgotPassword(event)"
+                        class="text-brandcyan hover:underline font-medium">Forgot password?</a>
+                </div>
+
+                <!-- Action Buttons: Cancel and Continue -->
+                <div class="flex items-center gap-3 pt-4 border-t border-white/10 mt-6">
+                    <button type="button" onclick="handleCancel()"
+                        class="flex-1 py-2.5 rounded-xl border border-white/15 text-slate-300 hover:bg-white/10 font-semibold text-xs transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-brandblue to-brandcyan hover:opacity-90 text-white font-semibold text-xs shadow-lg shadow-brandcyan/20 transition-all">
+                        Continue
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let currentRole = 'user';
+
+        const validCredentials = {
+            user: { username: 'user_login', password: 'user123', page: 'user_details.html' },
+            engineer: { username: 'engineer_login', password: 'engineer123', page: 'engineer details.html' },
+            admin: { username: 'admin_login', password: 'admin123', page: 'admin details.html' }
+        };
+
+        // Check LocalStorage for Remembered User on Page Load
+        function checkRememberedUser() {
+            const savedUser = localStorage.getItem('aai_remembered_user');
+            const savedRole = localStorage.getItem('aai_remembered_role');
+            if (savedUser && savedRole) {
+                selectRole(savedRole);
+                document.getElementById('username').value = savedUser;
+                document.getElementById('rememberMe').checked = true;
+            }
+        }
+
+        function selectRole(role) {
+            currentRole = role;
+            const tabs = ['user', 'engineer', 'admin'];
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === role) {
+                    btn.className = 'flex-1 py-2 text-xs font-semibold rounded-lg text-white bg-brandblue transition-all duration-200';
+                } else {
+                    btn.className = 'flex-1 py-2 text-xs font-semibold rounded-lg text-slate-300 hover:text-white transition-all duration-200';
+                }
+            });
+
+            const title = document.getElementById('login-title');
+            const subtitle = document.getElementById('login-subtitle');
+            const userIcon = document.getElementById('username-icon');
+            const userLabel = document.getElementById('username-label');
+
+            if (role === 'user') {
+                title.textContent = 'User Portal Login';
+                subtitle.textContent = 'Please enter your credentials to access your user dashboard';
+                userLabel.textContent = 'Username / ID';
+                userIcon.className = 'fa-solid fa-user-astronaut text-sm';
+            } else if (role === 'engineer') {
+                title.textContent = 'Engineer Portal Login';
+                subtitle.textContent = 'Access technical engineering controls & maintenance logs';
+                userLabel.textContent = 'Engineer ID / Employee Code';
+                userIcon.className = 'fa-solid fa-microchip text-sm';
+            } else if (role === 'admin') {
+                title.textContent = 'Admin Portal Login';
+                subtitle.textContent = 'Authorized Administrative & Procurement Management Access';
+                userLabel.textContent = 'Admin Security ID';
+                userIcon.className = 'fa-solid fa-shield-halved text-sm';
+            }
+        }
+
+        function handleCancel() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('rememberMe').checked = false;
+            localStorage.removeItem('aai_remembered_user');
+            localStorage.removeItem('aai_remembered_role');
+            window.location.href = 'index.html';
+        }
+
+        // Functional Forgot Password Handler
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            const userEmailInput = prompt(`Enter your registered Email or ID for ${currentRole.toUpperCase()} Portal recovery:`);
+            if (userEmailInput && userEmailInput.trim() !== "") {
+                alert(`Password reset link successfully sent to: ${userEmailInput}. Please check your inbox.`);
+            } else if (userEmailInput !== null) {
+                alert("Please enter a valid ID or Email to proceed.");
+            }
+        }
+
+        // Login Submit Handler with New Tab Redirection & Remember Me
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const inputUser = document.getElementById('username').value.trim();
+            const inputPass = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            const expected = validCredentials[currentRole];
+
+            if (inputUser === expected.username && inputPass === expected.password) {
+                // Handle Remember Me Storage
+                if (rememberMe) {
+                    localStorage.setItem('aai_remembered_user', inputUser);
+                    localStorage.setItem('aai_remembered_role', currentRole);
+                } else {
+                    localStorage.removeItem('aai_remembered_user');
+                    localStorage.removeItem('aai_remembered_role');
+                }
+
+                alert(`Access Granted! Welcome to ${currentRole.toUpperCase()} Portal. Opening dashboard in a new tab...`);
+
+                // Open respective dashboard in a NEW browser tab
+                window.open(expected.page, '_blank');
+            } else {
+                alert(`Invalid Credentials for ${currentRole.toUpperCase()} Portal! Please check username and password.`);
+            }
+        }
+    </script>
+</body>
+
+</html>

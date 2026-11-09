@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineer Login</title>
+
+    <!-- Favicon for Browser Tab Icon -->
+            <link rel="icon" type="image/jpeg" href="D:/call-login software/photos/logo.jpeg">
+
+
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandcyan: '#06b6d4',
+                        brandblue: '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: #030712;
+            overflow-x: hidden;
+           background-image: url('D:/call-login software/photos/aai_image2.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Darker & Blurred Background Layer */
+        .page-background {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(to bottom, rgba(3, 7, 18, 0.6), rgba(3, 7, 18, 0.7)),
+                url('C:/Users/abura/OneDrive/Pictures/My Photos/aai_image2.jpeg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            transform: scale(1.05);
+            z-index: -1;
+        }
+
+        /* Center Animation Container: Moves Emblem + Text to Exact Center & Locks */
+        .header-center-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: slideInToCenter 6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes slideInToCenter {
+            0% {
+                left: 150%;
+                transform: translateX(0%);
+                opacity: 0;
+            }
+
+            100% {
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 1;
+            }
+        }
+
+        /* Glassmorphic Dropdown Panel & Cards */
+        .glass-dropdown {
+            background: rgba(10, 16, 30, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen relative">
+
+    <!-- Dark & Blurred Background -->
+    <div class="page-background"></div>
+
+    <!-- TRANSPARENT & HEAVY BLURRED HEADER BAR -->
+    <header
+        class="w-full bg-black/40 backdrop-blur-xl border-b border-white/10 h-16 flex items-center justify-between px-6 sticky top-0 z-50 overflow-hidden shadow-lg">
+
+        <!-- Center Grouped Emblem & Text (Slides in together and locks at Exact Center) -->
+        <div class="header-center-container flex items-center gap-3 whitespace-nowrap">
+            <!-- Round Shaped AAI Emblem Image -->
+            <img class="h-9 w-9 object-cover rounded-full border border-white/20 shadow-md"
+                src="C:/Users/abura/OneDrive/Pictures/Camera Roll/aai_image.jpeg" alt="AAI Emblem">
+            <span class="text-xs lg:text-sm font-bold tracking-wider text-white uppercase drop-shadow-md">
+                भारतीय विमानपत्तन प्राधिकरण — AIRPORTS AUTHORITY OF INDIA
+            </span>
+            <span class="text-[11px] text-brandcyan font-semibold drop-shadow-md">
+                (Ministry of Civil Aviation)
+            </span>
+        </div>
+
+        <!-- Left Spacer element for flexbox balance -->
+        <div class="w-10"></div>
+
+        <!-- Right Side: Notification Button with Text and Dropdown -->
+        <div class="relative z-50">
+            <!-- Notification Button with "Notification" Text -->
+            <button onclick="toggleNotifications()"
+                class="relative px-3 py-2 rounded-xl bg-black/40 border border-white/10 text-slate-300 hover:text-white hover:bg-white/10 transition-all focus:outline-none flex items-center gap-2">
+                <i class="fa-solid fa-bell text-sm text-brandcyan"></i>
+                <span class="text-xs font-semibold text-slate-200">Notification</span>
+                <!-- Pulse Notification Badge Dot -->
+                <span id="notifDot" class="w-2 h-2 bg-brandcyan rounded-full animate-pulse"></span>
+            </button>
+
+            <!-- Notification Pop-up Box (Initially Hidden) -->
+            <div id="notificationDropdown"
+                class="hidden absolute right-0 mt-3 w-80 glass-dropdown rounded-2xl p-4 text-white shadow-2xl transition-all">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-brandcyan">Notifications</h3>
+                    <span id="notifCount"
+                        class="text-[10px] bg-brandcyan/20 text-brandcyan px-2 py-0.5 rounded-full font-semibold">4
+                        New</span>
+                </div>
+
+                <!-- Notification Items Container -->
+                <div id="notifList" class="space-y-2.5 text-xs">
+
+                    <!-- Notification 1 -->
+                    <div class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-circle-exclamation text-brandcyan mt-0.5"></i>
+                            <div>
+                                <p class="font-semibold text-white">New Tender Published</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Chennai Airport runway lighting procurement
+                                    request active.</p>
+                                <span class="text-[9px] text-slate-500 mt-1 block">10 mins ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification 2 -->
+                    <div class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-file-invoice-dollar text-emerald-400 mt-0.5"></i>
+                            <div>
+                                <p class="font-semibold text-white">Purchase Order Approved</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">PO #AAI-2026-884 has been approved by
+                                    Finance Admin.</p>
+                                <span class="text-[9px] text-slate-500 mt-1 block">1 hour ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification 3 -->
+                    <div class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-wrench text-amber-400 mt-0.5"></i>
+                            <div>
+                                <p class="font-semibold text-white">Maintenance Log Alert</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Scheduled inspection for terminal baggage
+                                    scanners due tomorrow.</p>
+                                <span class="text-[9px] text-slate-500 mt-1 block">3 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification 4 -->
+                    <div class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-shield-halved text-rose-400 mt-0.5"></i>
+                            <div>
+                                <p class="font-semibold text-white">System Security Notice</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Routine database backup completed
+                                    successfully without errors.</p>
+                                <span class="text-[9px] text-slate-500 mt-1 block">Yesterday</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Empty Notifications Placeholder (Hidden by default) -->
+                <div id="emptyNotifMsg" class="hidden text-center py-6">
+                    <i class="fa-solid fa-circle-check text-2xl text-emerald-400 mb-2"></i>
+                    <p class="text-xs text-slate-300 font-medium">All caught up!</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">No new notifications available.</p>
+                </div>
+
+                <!-- Footer Action -->
+                <div class="pt-3 mt-3 border-t border-white/10 text-center">
+                    <button id="markReadBtn" onclick="markAllAsRead()"
+                        class="text-[11px] text-brandcyan font-semibold hover:underline">Mark all as read</button>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT AREA -->
+    <main class="flex-1 p-6 flex items-center justify-center relative z-10">
+        <div class="glass-dropdown p-8 rounded-2xl text-center max-w-lg">
+            <h1 class="text-xl font-bold text-white mb-2">Welcome to AAI Management Portal</h1>
+            <p class="text-xs text-slate-300">Select options from your dashboard menu or check notifications above for
+                recent updates.</p>
+        </div>
+    </main>
+
+    <!-- JAVASCRIPT FOR DROPDOWN & CLEAR NOTIFICATIONS LOGIC -->
+    <script>
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Functional Mark All as Read - Clears All Notifications
+        function markAllAsRead() {
+            const notifList = document.getElementById('notifList');
+            const emptyNotifMsg = document.getElementById('emptyNotifMsg');
+            const notifCount = document.getElementById('notifCount');
+            const notifDot = document.getElementById('notifDot');
+            const markReadBtn = document.getElementById('markReadBtn');
+
+            // Hide items and show empty state
+            notifList.classList.add('hidden');
+            emptyNotifMsg.classList.remove('hidden');
+
+            // Update badges and count
+            notifCount.textContent = '0 New';
+            notifCount.className = 'text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-semibold';
+            if (notifDot) notifDot.classList.add('hidden');
+
+            // Disable or update button
+            markReadBtn.textContent = 'All cleared';
+            markReadBtn.classList.remove('hover:underline', 'text-brandcyan');
+            markReadBtn.classList.add('text-slate-500', 'cursor-default');
+            markReadBtn.onclick = null;
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function (e) {
+            const bellButton = document.querySelector('header button');
+            const dropdown = document.getElementById('notificationDropdown');
+            if (bellButton && dropdown && !bellButton.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
